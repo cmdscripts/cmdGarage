@@ -1,3 +1,4 @@
+const resource = GetParentResourceName ? GetParentResourceName() : 'garage';
 var data = {
     searchactive: false,
     showfav: false,
@@ -12,7 +13,7 @@ jQuery(document).ready(function(){
             if (event.state) {
                 $('body').css('display', 'flex');
                 $(".currentgarage").text(event.name);
-                $.post('http://dinerov_garage/enable-parking', JSON.stringify({}));
+                $.post('http://' + resource + '/enable-parking', JSON.stringify({}));
             } else {
                 $('body').css('display', 'none');
             }
@@ -58,7 +59,7 @@ function resetdata() {
 }
 
 $( ".close" ).click(function() {
-    $.post('http://dinerov_garage/escape', JSON.stringify({}));
+    $.post('http://' + resource + '/escape', JSON.stringify({}));
     $('body').css('display', 'none');
     resetdata()
 });
@@ -76,11 +77,11 @@ function actionselect(elem,action) {
 
         if (action == "einparken") {
             parkbtn.innerText = "Einparken"
-            $.post('http://dinerov_garage/enable-parking', JSON.stringify({}));
+            $.post('http://' + resource + '/enable-parking', JSON.stringify({}));
             $(".placeholder").text("Keine Fahrzeuge in der Nähe zum einparken");
         } else if (action == "ausparken") {
             parkbtn.innerText = "Ausparken"
-            $.post('http://dinerov_garage/enable-parkout', JSON.stringify({}));
+            $.post('http://' + resource + '/enable-parkout', JSON.stringify({}));
             $(".placeholder").text("Du hast keine Fahrzeuge in der Garage");
         }
     }
@@ -89,11 +90,11 @@ function actionselect(elem,action) {
 function park() {
     if(data.selectedveh != null) {
         if(data.action == "einparken") {
-            $.post('http://dinerov_garage/park-in', JSON.stringify({plate: data.selectedveh}));
+            $.post('http://' + resource + '/park-in', JSON.stringify({plate: data.selectedveh}));
         } else if (data.action == "ausparken") {
-            $.post('http://dinerov_garage/park-out', JSON.stringify({plate: data.selectedveh}));
+            $.post('http://' + resource + '/park-out', JSON.stringify({plate: data.selectedveh}));
         }
-        $.post('http://dinerov_garage/escape', JSON.stringify({}));
+        $.post('http://' + resource + '/escape', JSON.stringify({}));
         $('body').css('display', 'none');
         resetdata()    
     }
@@ -182,13 +183,13 @@ function searchfunction() {
 function togglecarfav(elem,plate) {
     if (elem.innerHTML == '<i class="far fa-star" aria-hidden="true"></i>') {
         elem.innerHTML = '<i class="fas fa-star" aria-hidden="true"></i>'
-        $.post('http://dinerov_garage/setvehfav', JSON.stringify({
+        $.post('http://' + resource + '/setvehfav', JSON.stringify({
             plate: plate,
             state: true
         }));
     } else {
         elem.innerHTML = '<i class="far fa-star" aria-hidden="true"></i>'
-        $.post('http://dinerov_garage/setvehfav', JSON.stringify({
+        $.post('http://' + resource + '/setvehfav', JSON.stringify({
             plate: plate,
             state: false
         }));
@@ -258,7 +259,7 @@ function AddCar(model, plate, nickname, isFav) {
 
 function renamevehiclenickname(elem,plate) {
     if (document.getElementById(plate).value != "") {
-        $.post('http://dinerov_garage/rename', JSON.stringify({
+        $.post('http://' + resource + '/rename', JSON.stringify({
             plate: plate,
             nickname: document.getElementById(plate).value
         }));

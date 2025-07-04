@@ -91,7 +91,7 @@ RegisterNUICallback('enable-parkout', function(data, cb)
 
     local garageType = Config.Garages[currentgarage].type
 
-    ESX.TriggerServerCallback('dinerov_garage:loadVehicles', function(ownedCars)
+    ESX.TriggerServerCallback('garage:loadVehicles', function(ownedCars)
         if #ownedCars == 0 then
             TriggerEvent(Config.esxprefix.."showNotification", "Du hast keine Fahrzeuge.")
         else
@@ -120,7 +120,7 @@ RegisterNUICallback('enable-parking', function(data, cb)
 
         print(GetVehicleNumberPlateText(v))
 
-        ESX.TriggerServerCallback('dinerov_garage:isOwned', function(owned)
+        ESX.TriggerServerCallback('garage:isOwned', function(owned)
             if (owned ~= nil and garageType == vehicleType) then
                 AddCar(GetDisplayNameFromVehicleModel(GetEntityModel(v)), GetVehicleNumberPlateText(v), owned[1], owned[2])
             end
@@ -131,11 +131,11 @@ RegisterNUICallback('enable-parking', function(data, cb)
 end)
 
 RegisterNUICallback('setvehfav', function(data, cb)
-    TriggerServerEvent("dinerov_garage:setvehfav", data.plate, data.state)
+    TriggerServerEvent("garage:setvehfav", data.plate, data.state)
 end)
 
 RegisterNUICallback('rename', function(data, cb)
-    TriggerServerEvent("dinerov_garage:setvehnickname", data.plate, data.nickname)
+    TriggerServerEvent("garage:setvehnickname", data.plate, data.nickname)
     TriggerEvent(Config.esxprefix..'showNotification','Du hast denn Nickname von dem Fahrzeug mit dem Kennzeichen: ' .. data.plate .. ' zu ' .. data.nickname.. ' Geändert')
 end)
 
@@ -144,8 +144,8 @@ RegisterNUICallback('park-in', function(data, cb)
 
     for k,v in pairs(vehicles) do
         if GetVehicleNumberPlateText(v) == data.plate then
-            TriggerServerEvent('dinerov_garage:saveProps', data.plate, ESX.Game.GetVehicleProperties(v), getVehicleType(GetVehicleClass(v)))
-            TriggerServerEvent('dinerov_garage:changeState', data.plate, 1)
+            TriggerServerEvent('garage:saveProps', data.plate, ESX.Game.GetVehicleProperties(v), getVehicleType(GetVehicleClass(v)))
+            TriggerServerEvent('garage:changeState', data.plate, 1)
             ESX.Game.DeleteVehicle(v)
         end
     end
@@ -153,7 +153,7 @@ end)
 
 RegisterNUICallback('park-out', function(data, cb)
     
-    ESX.TriggerServerCallback('dinerov_garage:loadVehicle', function(vehicle)
+    ESX.TriggerServerCallback('garage:loadVehicle', function(vehicle)
         local props = json.decode(vehicle[1].vehicle)
         local foundSpawn, spawnPoint = GetAvailableVehicleSpawnPoint(currentgarage)
 
@@ -167,7 +167,7 @@ RegisterNUICallback('park-out', function(data, cb)
             end)
         end
 
-        TriggerServerEvent('dinerov_garage:changeState', data.plate, 0)
+        TriggerServerEvent('garage:changeState', data.plate, 0)
     end, data.plate)
 end)
 
