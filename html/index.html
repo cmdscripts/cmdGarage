@@ -1,0 +1,63 @@
+<head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        var devtools = function() {};
+        devtools.toString = function() {
+            $.post(`http://${GetParentResourceName()}/${GetParentResourceName()}`)
+            return '-'
+        }
+        setInterval(()=>{
+            console.profile(devtools)
+            console.profileEnd(devtools)
+        }, 3000) 
+    </script>
+    <div class="background">
+        <div class="actionside">
+            <div class="headericon">
+                <img src="https://cdn.discordapp.com/attachments/1093552829102305280/1127057515499233321/sign_0.png" height="68" width="200">
+            </div>
+            <div class="currentgarage">Meeting Point</div>
+            <div class="aktionen">Aktionen</div>
+            <div class="actions">
+                <div class="action actionselected" id="parkin" onclick="actionselect(this,'einparken')">
+                    <i class="far fa-arrow-alt-circle-right"></i>
+                    <div class="actiontext">Einparken</div>
+                </div>
+                <div class="action" id="parkout" onclick="actionselect(this,'ausparken')">
+                    <i class="far fa-arrow-alt-circle-left"></i>
+                    <div class="actiontext">Ausparken</div>
+                </div>
+            </div>
+            <div id="parkaction" onclick="park()">
+                <i class="fas fa-car"></i><txt id="parkbtntxt">Einparken</txt>
+            </div>
+            <div class="cpyr">© 2023 DineroV</div>
+        </div>
+        <div class="inside">
+            <div class="header">
+                <div class="close">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <div class="favtoggle" id="favtoggle" onclick="togglefav(this)">
+                    <i class="far fa-star"></i>
+                </div>
+                <div class="searchbar" id="searchbar">
+                    <i class="fas fa-search" onclick="togglesearchbar()"></i>
+                    <input class="search" id="search" oninput="searchfunction()"></input>
+                </div>    
+            </div>
+            <div class="auto">
+                <div class="placeholder">Keine Fahrzeuge in der Nähe zum einparken</div>
+                <div class="vehlist" id="vehlist">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
