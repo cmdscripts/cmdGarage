@@ -1,5 +1,13 @@
 local allow = true
 
+-- create database structure on first start
+MySQL.ready(function()
+    local sql = LoadResourceFile(GetCurrentResourceName(), 'sql.sql')
+    if sql then
+        MySQL.Sync.execute(sql)
+    end
+end)
+
 -- ESX = nil
 -- local allow = true
 
@@ -7,7 +15,7 @@ local allow = true
 -- 	ESX = obj
 -- end)
 
-ESX.RegisterServerCallback('dinerov_garage:loadVehicles', function(source, cb)
+ESX.RegisterServerCallback('garage:loadVehicles', function(source, cb)
 	local ownedCars = {}
 	local s = source
 	local x = ESX.GetPlayerFromId(s)
@@ -35,7 +43,7 @@ ESX.RegisterServerCallback('dinerov_garage:loadVehicles', function(source, cb)
     end
 end)
 
-ESX.RegisterServerCallback('dinerov_garage:isOwned', function(source, cb, plate)
+ESX.RegisterServerCallback('garage:isOwned', function(source, cb, plate)
 	local s = source
 	local x = ESX.GetPlayerFromId(s)
 
@@ -52,7 +60,7 @@ ESX.RegisterServerCallback('dinerov_garage:isOwned', function(source, cb, plate)
     end
 end)
 
-ESX.RegisterServerCallback('dinerov_garage:loadVehicle', function(source, cb, plate)
+ESX.RegisterServerCallback('garage:loadVehicle', function(source, cb, plate)
 	
 	local s = source
 	local x = ESX.GetPlayerFromId(s)
@@ -65,29 +73,29 @@ ESX.RegisterServerCallback('dinerov_garage:loadVehicle', function(source, cb, pl
     end
 end)
 
-RegisterNetEvent('dinerov_garage:setvehfav')
-AddEventHandler('dinerov_garage:setvehfav', function(plate, state)
+RegisterNetEvent('garage:setvehfav')
+AddEventHandler('garage:setvehfav', function(plate, state)
 	if allow then
         MySQL.Sync.execute("UPDATE owned_vehicles SET isFav = @isFav WHERE plate = @plate", {['@plate'] = plate, ['@isFav'] = state})
     end
 end)
 
-RegisterNetEvent('dinerov_garage:setvehnickname')
-AddEventHandler('dinerov_garage:setvehnickname', function(plate, nickname)
+RegisterNetEvent('garage:setvehnickname')
+AddEventHandler('garage:setvehnickname', function(plate, nickname)
     if allow then
 	    MySQL.Sync.execute("UPDATE owned_vehicles SET nickname = @nickname WHERE plate = @plate", {['@plate'] = plate, ['@nickname'] = nickname})
     end
 end)
 
-RegisterNetEvent('dinerov_garage:changeState')
-AddEventHandler('dinerov_garage:changeState', function(plate, state)
+RegisterNetEvent('garage:changeState')
+AddEventHandler('garage:changeState', function(plate, state)
     if allow then
 	    MySQL.Sync.execute("UPDATE owned_vehicles SET `stored` = @state WHERE `plate` = @plate", {['@state'] = state, ['@plate'] = plate})
     end
 end)
 
-RegisterNetEvent('dinerov_garage:saveProps')
-AddEventHandler('dinerov_garage:saveProps', function(plate, props)
+RegisterNetEvent('garage:saveProps')
+AddEventHandler('garage:saveProps', function(plate, props)
     local xProps = json.encode(props)
     if allow then
         MySQL.Sync.execute("UPDATE owned_vehicles SET `vehicle` = ? WHERE `plate` = ?", {xProps, plate})
